@@ -89,10 +89,12 @@ const moveOneStep = (userInput, myField) => {
       nextIndex = [curRow + 1, curCol]
       break;
     case 'RESTART':
+      resetForNewGame();
       startGame();
+      break;
     default:
       msgFormatter('Invalid Input. Try again!');
-
+      break;
   }
   if(nextIndex){
     if(0 < nextIndex[0] < 3 && 0 < nextIndex[1] < 3 ){
@@ -113,16 +115,19 @@ const moveOneStep = (userInput, myField) => {
         default:
           msgFormatter('Woahhhh! That is a wall!')
           playAgain();
+          break;
       }
-    }else {
-      msgFormatter('Oops! You have hit a wall!')
-      inGame = false;
     }
   }
-
 }
-const playAgain = () => {
+
+const resetForNewGame = () => {
   inGame = false;
+  currentIndex = [0,0];
+};
+
+const playAgain = () => {
+  resetForNewGame();
   let openSession = true;
   while(openSession){
     let userInput = prompt('Do you want to play again? (y/n)')
@@ -148,10 +153,9 @@ const startGame = () => {
   while(inGame){
     console.log('\n---------------------------\n')
     myField.print()
-    msgFormatter("Let's get started!")
     let userInput = prompt("Choose which way you want to go (r/l/u/d) or Start a new game (restart)")
     userInput = userInput.toString().toUpperCase();
-    moveOneStep(userInput, myField)
+    moveOneStep(userInput, myField, currentIndex);
   }
 }
 
