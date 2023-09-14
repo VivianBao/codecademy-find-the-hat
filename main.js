@@ -13,6 +13,9 @@ class Field {
   }
 
   static generateField(height, width, percent){
+    //create empty field
+    const newElements = Array(width).fill('');
+    let newField = Array(height).fill([...newElements]);
     // shuffle fields and holes array
     const totalCharaCount = height*width - 1 //minus hat
     const holesNum = Math.round(totalCharaCount*(percent/100));
@@ -21,8 +24,6 @@ class Field {
     //set path location
     totalCharaArr.unshift(pathCharacter);
     //set fields and holes location
-    const newElements = Array(width).fill('');
-    let newField = Array(height).fill([...newElements]);
     let index = 0;
     newField = newField.map((row)=> {
       return row.map((element)=> {
@@ -79,36 +80,41 @@ const moveOneStep = (userInput, myField) => {
     case 'D':
       nextIndex = [curRow + 1, curCol]
       break;
-  }
+    default:
+      console.log('Invalid Input. Try again!')
+      inGame = false;
 
-  if(0 < nextIndex[0] < 3 && 0 < nextIndex[1] < 3 ){
-    let nextCharacter = myField.field[nextIndex[0]][nextIndex[1]];
-    switch(nextCharacter){
-      case hat:
-        console.log('Congradulations! You found the goal!')
-        inGame = false;
-        break;
-      case hole:
-        console.log('Oops! You have fallen into a hole!')
-        inGame = false;
-        break;
-      case fieldCharacter:
-        currentIndex = nextIndex;
-        myField.field[nextIndex[0]][nextIndex[1]] = pathCharacter;
-        break;
-      default:
-        console.log('Woahhhh! That is a wall!')
-        inGame = false;
+  }
+  if(nextIndex){
+    if(0 < nextIndex[0] < 3 && 0 < nextIndex[1] < 3 ){
+      let nextCharacter = myField.field[nextIndex[0]][nextIndex[1]];
+      switch(nextCharacter){
+        case hat:
+          console.log('Congradulations! You found the goal!')
+          inGame = false;
+          break;
+        case hole:
+          console.log('Oops! You have fallen into a hole!')
+          inGame = false;
+          break;
+        case fieldCharacter:
+          currentIndex = nextIndex;
+          myField.field[nextIndex[0]][nextIndex[1]] = pathCharacter;
+          break;
+        default:
+          console.log('Woahhhh! That is a wall!')
+          inGame = false;
+      }
+    }else {
+      console.log('Oops! You have hit a wall!')
+      inGame = false;
     }
-  }else {
-    console.log('Oops! You have hit a wall!')
-    inGame = false;
   }
 
 }
 
 const startGame = () => {
-  const myField = Field.generateField(6,6, 20);
+  const myField = Field.generateField(6,8, 20);
   inGame = true;
   while(inGame){
     myField.print()
