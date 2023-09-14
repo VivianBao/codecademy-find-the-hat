@@ -49,7 +49,7 @@ const getRandomInt = (num) => {
 };
 
 
-function shuffle(array) {
+const shuffle = (array) => {
   let currentIndex = array.length,  randomIndex;
 
   while (currentIndex > 0) {
@@ -61,6 +61,15 @@ function shuffle(array) {
   }
 
   return array;
+}
+
+const msgFormatter = (msg) => {
+  console.log(`\n${msg}\n`)
+}
+
+const titleGenerator = () => {
+  console.log('---------------------------')
+  console.log('\nWelcome to Find the Hat!')
 }
 
 const moveOneStep = (userInput, myField) => {
@@ -80,7 +89,7 @@ const moveOneStep = (userInput, myField) => {
       nextIndex = [curRow + 1, curCol]
       break;
     default:
-      console.log('Invalid Input. Try again!')
+      msgFormatter('Invalid Input. Try again!');
 
   }
   if(nextIndex){
@@ -88,13 +97,11 @@ const moveOneStep = (userInput, myField) => {
       let nextCharacter = myField.field[nextIndex[0]][nextIndex[1]];
       switch(nextCharacter){
         case hat:
-          console.log('Congradulations! You found the goal!')
-          inGame = false;
+          msgFormatter('Congradulations! You found the goal!')
           playAgain();
           break;
         case hole:
-          console.log('Oops! You have fallen into a hole!')
-          inGame = false;
+          msgFormatter('Oops! You have fallen into a hole!')
           playAgain();
           break;
         case fieldCharacter:
@@ -102,18 +109,18 @@ const moveOneStep = (userInput, myField) => {
           myField.field[nextIndex[0]][nextIndex[1]] = pathCharacter;
           break;
         default:
-          console.log('Woahhhh! That is a wall!')
-          inGame = false;
+          msgFormatter('Woahhhh! That is a wall!')
           playAgain();
       }
     }else {
-      console.log('Oops! You have hit a wall!')
+      msgFormatter('Oops! You have hit a wall!')
       inGame = false;
     }
   }
 
 }
 const playAgain = () => {
+  inGame = false;
   let openSession = true;
   while(openSession){
     let userInput = prompt('Do you want to play again? (y/n)')
@@ -122,20 +129,22 @@ const playAgain = () => {
       case "Y":
         startGame();
         openSession = false;
+        break;
       case "N":
-        console.log('Until next time!');
+        msgFormatter('Until next time!');
         openSession = false;
+        break;
       default:
-        console.log("Invalid input. Try Again!")
+        msgFormatter("Invalid input. Try Again!")
     }
   }
-
-
 }
 const startGame = () => {
   const myField = Field.generateField(6,8, 20);
   inGame = true;
+  titleGenerator();
   while(inGame){
+    console.log('\n---------------------------\n')
     myField.print()
     let userInput = prompt('Which way? (r/l/u/d)')
     userInput = userInput.toString().toUpperCase();
