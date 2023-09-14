@@ -64,7 +64,6 @@ function shuffle(array) {
 }
 
 const moveOneStep = (userInput, myField) => {
-  userInput = userInput.toString().toUpperCase();
   let [curRow, curCol] = currentIndex;
   let nextIndex;
   switch(userInput){
@@ -82,7 +81,6 @@ const moveOneStep = (userInput, myField) => {
       break;
     default:
       console.log('Invalid Input. Try again!')
-      inGame = false;
 
   }
   if(nextIndex){
@@ -92,10 +90,12 @@ const moveOneStep = (userInput, myField) => {
         case hat:
           console.log('Congradulations! You found the goal!')
           inGame = false;
+          playAgain();
           break;
         case hole:
           console.log('Oops! You have fallen into a hole!')
           inGame = false;
+          playAgain();
           break;
         case fieldCharacter:
           currentIndex = nextIndex;
@@ -104,6 +104,7 @@ const moveOneStep = (userInput, myField) => {
         default:
           console.log('Woahhhh! That is a wall!')
           inGame = false;
+          playAgain();
       }
     }else {
       console.log('Oops! You have hit a wall!')
@@ -112,13 +113,32 @@ const moveOneStep = (userInput, myField) => {
   }
 
 }
+const playAgain = () => {
+  let openSession = true;
+  while(openSession){
+    let userInput = prompt('Do you want to play again? (y/n)')
+    userInput = userInput.toString().toUpperCase();
+    switch(userInput){
+      case "Y":
+        startGame();
+        openSession = false;
+      case "N":
+        console.log('Until next time!');
+        openSession = false;
+      default:
+        console.log("Invalid input. Try Again!")
+    }
+  }
 
+
+}
 const startGame = () => {
   const myField = Field.generateField(6,8, 20);
   inGame = true;
   while(inGame){
     myField.print()
-    const userInput = prompt('Which way?')
+    let userInput = prompt('Which way? (r/l/u/d)')
+    userInput = userInput.toString().toUpperCase();
     moveOneStep(userInput, myField)
   }
 }
