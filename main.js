@@ -88,6 +88,8 @@ const moveOneStep = (userInput, myField) => {
     case 'D':
       nextIndex = [curRow + 1, curCol]
       break;
+    case 'RESTART':
+      startGame();
     default:
       msgFormatter('Invalid Input. Try again!');
 
@@ -146,7 +148,8 @@ const startGame = () => {
   while(inGame){
     console.log('\n---------------------------\n')
     myField.print()
-    let userInput = prompt('Which way? (r/l/u/d)')
+    msgFormatter("Let's get started!")
+    let userInput = prompt("Choose which way you want to go (r/l/u/d) or Start a new game (restart)")
     userInput = userInput.toString().toUpperCase();
     moveOneStep(userInput, myField)
   }
